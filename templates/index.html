@@ -1,1 +1,54 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>강의록 주석 PDF 생성기</title>
+  <style>
+    body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;max-width:900px;margin:32px auto;padding:0 16px;line-height:1.5}
+    textarea{width:100%;min-height:320px;padding:12px;font-size:14px}
+    .card{border:1px solid #ddd;border-radius:12px;padding:20px}
+    .flash{background:#fff7e6;border:1px solid #f0c36d;padding:10px 12px;border-radius:8px;margin-bottom:14px}
+    button{background:#111;color:#fff;border:none;border-radius:10px;padding:12px 16px;font-size:15px;cursor:pointer}
+    input[type=file]{margin:8px 0 16px}
+    .hint{color:#555;font-size:14px}
+  </style>
+</head>
+<body>
+  <h1>강의록 주석 PDF 생성기</h1>
+  <p class="hint">PDF 강의록과 페이지별 전사문을 넣으면, 문제 페이지를 건너뛰고 주석 PDF를 만들어 줍니다.</p>
 
+  {% with messages = get_flashed_messages() %}
+    {% if messages %}
+      {% for message in messages %}
+        <div class="flash">{{ message }}</div>
+      {% endfor %}
+    {% endif %}
+  {% endwith %}
+
+  <div class="card">
+    <form action="/process" method="post" enctype="multipart/form-data">
+      <label><strong>PDF 파일</strong></label><br>
+      <input type="file" name="pdf_file" accept="application/pdf" required><br>
+
+      <label><strong>전사문</strong></label>
+      <textarea name="transcript" placeholder="00:00
+
+TalkFile_xxx.pdf
+·
+1페이지
+출석 체크...
+
+01:48
+
+TalkFile_xxx.pdf
+·
+2페이지
+먼저 복막과 peritoneum..."></textarea>
+
+      <p class="hint">전사문은 시간 / 파일명 / · / n페이지 / 본문 형식이면 가장 잘 맞습니다.</p>
+      <button type="submit">PDF 생성</button>
+    </form>
+  </div>
+</body>
+</html>
